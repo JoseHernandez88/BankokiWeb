@@ -14,7 +14,7 @@ try
 	if (connection != null)
 	{
 		builder.Services.AddDbContext<DataContext>(options =>
-			options.UseSqlServer(connection));
+			options.UseSqlServer(connection, options => options.EnableRetryOnFailure()));
 	}
 	else
 	{
