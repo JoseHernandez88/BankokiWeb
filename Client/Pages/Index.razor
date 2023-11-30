@@ -136,40 +136,46 @@
 
 @code {
     [Parameter]
-    public string? contrasena { get; set; }
-    public string? email { get; set; }
+    public string contrasena { get; set; }
+    private string email { get; set; }
     string notice = "";
-
-
-    //List<GetClienteVerifyPassword> cuentas = new List<GetClienteVerifyPassword>();
-    //Cliente cli = new Cliente { Password = contrasena  , Email = email };
-
-
 
 
     private async void LoginValidation()
     {
+
         Cliente? cli = new();
+
 
         if(contrasena is not null && email is not null)
         {
-            var result = Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
-            cli = await result;
-
-            if(cli is not null)
+            try
             {
-                if(cli.Password == contrasena)
+                var result = Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
+                //notice = "entre";
+                cli = await result;
+                //notice = "entre2";
+
+                if (cli is not null)
                 {
-                    NavigationManager.NavigateTo("/MainPage");
+                    if (cli.Password == contrasena)
+                    {
+                        NavigationManager.NavigateTo("/MainPage");
+                    }
+                    else
+                    {
+                        notice = "Contraseña incorrecta";
+                    }
                 }
                 else
                 {
-                    notice = "Contraseña incorrecta";
+                    notice = "No se encontro el usuario";
                 }
-            }
-            else
+            } 
+            catch (Exception ex)
             {
-                notice = "No se encontro el usuario";
+                
+                Console.WriteLine(ex.ToString());
             }
         }
 
