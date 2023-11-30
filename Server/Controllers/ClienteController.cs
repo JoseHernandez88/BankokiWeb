@@ -105,7 +105,6 @@ namespace BakokiWeb.Server.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Cuenta>> PostCuenta(Cuenta cuenta)
 		{
-			_
 		}
 
 	}
