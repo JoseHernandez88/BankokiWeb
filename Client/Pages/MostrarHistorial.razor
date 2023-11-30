@@ -1,0 +1,54 @@
+﻿@page "/MostrarHistorial"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using Bankoki_client_server_.Shared;
+
+<PageTitle>Mostrar Historial</PageTitle>
+
+<h1>Historial de cuentas</h1>
+
+@if (cuentas == null)
+{
+    <p>Esta cuenta no tiene historial...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre de la cuenta</th>
+                <th>Fecha de inicio</th>
+                <th>Historial de cuenta</th>
+                <th>Fecha de culminación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cuenta in cuentas)
+            {
+                <tr>
+                    <td>@cuenta.AccountName</td>
+                    <td>@cuenta.OpenDate</td>
+                    <td>@cuenta.History</td>
+                    <td>@cuenta.CloseDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<Accounts> cuentas = new List<Accounts>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var results = await Http.GetFromJsonAsync<List<Accounts>>("api/Accounts");
+        @if (results != null)
+        {
+            cuentas = results;
+        }
+    }
+
+}
+
+
