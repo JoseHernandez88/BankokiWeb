@@ -145,7 +145,8 @@
     {
 
         //Cliente? cli = new();
-        List<Cliente> cli = new List<Cliente>();
+        Cliente? cli = new();
+        List<Cliente?> list = new();
 
 
         if(contrasena is not null && email is not null)
@@ -153,12 +154,45 @@
             try
             {
                 notice = "entre0";
-                var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Cliente/{contrasena}/{email}");
-                notice = "entre";
-                cli = result;
+                var result = await Http.GetFromJsonAsync<List<Cliente?>>($"api/Cliente/{contrasena}/{email}");
+                Console.WriteLine("message:",result.ToString());
+                /*if (result != null)
+                {
+                //A test comment when ready.
+                Console.WriteLine(result.ToString());
+                }
+                else
+                {
+                Console.WriteLine("Result was null.");
+            }*/
+
+                if (result != null)
+                {
+                    list = result.ToList();
+
+                    if(list.Any())
+                    {
+                        cli = list.FirstOrDefault();
+                        if (cli is null)
+                        {
+                            //Replace with validatoion false tree.
+                            Console.WriteLine("Client value was null.");
+                        }
+                        else
+                        {
+                            //Replace with validation posative tree.
+                            Console.WriteLine("Last name: ",cli.LastName.ToString());
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Index Page: Has lost a list.");
+                    }
+                }
+
                 notice = "entre2";
 
-                if (cli.Any()==false)
+                /*if (cli.Any()==false)
                 {
                     notice = "entre3";
                     //if (cli.Password == contrasena)
@@ -173,7 +207,7 @@
                 else
                 {
                     notice = "No se encontro el usuario";
-                }
+                }*/
             } 
             catch (Exception ex)
             {
