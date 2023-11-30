@@ -42,7 +42,7 @@ namespace BakokiWeb.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-		[HttpGet("{password},{email}")]
+		[HttpGet("{password}/{email}")]
 		public async Task<ActionResult<Cliente>> GetClienteVerifyPassword(string password, string email)
 		{
 			try
