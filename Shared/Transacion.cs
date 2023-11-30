@@ -17,5 +17,22 @@ namespace BakokiWeb.Shared
 		public string Origin { get; set; } 
 			= "";
 		public Transacion() { }
+		public Int64 SignedCentValue() 
+		{ 
+			return Amount * Convert.ToInt64((Math.Pow(-1, Convert.ToDouble(IsCredit)))); 
+		}
+		public Int64 Sum(Int64 value)
+		{
+			// This code 
+			return value + this.SignedCentValue();
+		}
+		public Int64 Sum(Transacion tran)
+		{
+			return tran.SignedCentValue()+this.SignedCentValue();
+		}
+		public double SignedDollarValue()
+		{
+			return this.SignedCentValue() / 100.0;
+		}
 	}
 }

@@ -10,17 +10,32 @@ namespace BakokiWeb.Shared
 	public class Cuenta
 	{
 		[Key]
-		public string AccountNumber { get; set; } 
+		public string AccountNumber { get; set; }
 			= "";
-		public string AccountName { get; set; } 
+		public string AccountName { get; set; }
 			= "";
 		public bool IsOpen { get; set; }
-			=true;
+			= true;
 		public Cliente Cliente { get; set; }
 			= new Cliente();
-		public ICollection<Transacion> Transaciones { get; set; } 
+		public ICollection<Transacion> Transaciones { get; set; }
 			= new List<Transacion>();
 
-		public Cuenta() { }	
+		public Cuenta() { }
+		public double Balance()
+		{
+			Int64 sum=0;
+			if (Transaciones.Any())
+			{
+				foreach(var t in Transaciones)
+				{
+					sum = t.Sum(sum);
+				}
+			}
+			
+			return sum/100.0;
+		}
 
+	}
+}
 		

@@ -102,11 +102,12 @@ namespace BakokiWeb.Server.Controllers
 				return BadRequest($"Cliente Controller:Could not find {email}");
 			}
 		}
-		[HttpPost]
+		/*[HttpPost]
 		public async Task<ActionResult<Cuenta>> PostCuenta(Cuenta cuenta)
 		{
-			_
-		}
+		
+			return Ok(null);
+		}*/
 
 	}
 }
