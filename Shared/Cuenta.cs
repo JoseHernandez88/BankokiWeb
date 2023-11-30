@@ -22,5 +22,20 @@ namespace BakokiWeb.Shared
 			= new List<Transacion>();
 
 		public Cuenta() { }
+		public double Balance()
+		{
+			Int64 sum=0;
+			if (Transaciones.Any())
+			{
+				foreach(var t in Transaciones)
+				{
+					sum = t.Sum(sum);
+				}
+			}
+			
+			return sum/100.0;
+		}
+
 	}
 }
+		

@@ -1,6 +1,7 @@
 ﻿@layout LoginLayout
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@using BakokiWeb.Shared
 @page "/"
 
 
@@ -134,20 +135,30 @@
 </div>
 
 @code {
-    private string contrasena { get; set; }
-    private string email { get; set; }
+    [Parameter]
+    public string? contrasena { get; set; }
+    public string? email { get; set; }
     string notice = "";
 
-    
 
-    private void LoginValidation()
+    //List<GetClienteVerifyPassword> cuentas = new List<GetClienteVerifyPassword>();
+    //Cliente cli = new Cliente { Password = contrasena  , Email = email };
+
+
+
+
+    private async void LoginValidation()
     {
+        Cliente? cli = new();
 
-        if (email != null && contrasena != null)
+        if(contrasena is not null && email is not null)
         {
-            if (email.Contains("@") && email.Contains(".com"))
+            var result = Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
+            cli = await result;
+
+            if(cli is not null)
             {
-                if (email == "hola@gmail.com" && contrasena == "1234")
+                if(cli.Password == contrasena)
                 {
                     NavigationManager.NavigateTo("/MainPage");
                 }
@@ -158,12 +169,31 @@
             }
             else
             {
-                notice = "Porfavor ingrese email valido";
+                notice = "No se encontro el usuario";
             }
         }
-        else
-        {
-            notice = "Porfavor ingrese email y contraseña";
-        }
+
+        //if (email != null && contrasena != null)
+        //{
+            //if (email.Contains("@") && email.Contains(".com"))
+            //{
+                //if (email == "hola@gmail.com" && contrasena == "1234")
+                //{
+                    //NavigationManager.NavigateTo("/MainPage");
+                //}
+                //else
+                //{
+                   // notice = "Contraseña incorrecta";
+                //}
+            //}
+            //else
+            //{
+                //notice = "Porfavor ingrese email valido";
+            //}
+        //}
+        //else
+        //{
+            //notice = "Porfavor ingrese email y contraseña";
+        //}
     }
 }
