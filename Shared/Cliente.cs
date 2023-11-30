@@ -21,6 +21,12 @@ namespace BakokiWeb.Shared
 			= "";
 		public bool LoggedIn { get; set; }
 			=false;
+		public string PhoneNumber { get; set; }
+			= "";
+		public string AddressLine1 { get; set; } 
+			= "";
+		public string AddressLine2 { get; set; }
+			= "";
 		public ICollection<Cuenta> Cuentas { get; set; }
 			= new List<Cuenta>();
 		public Cliente() { }

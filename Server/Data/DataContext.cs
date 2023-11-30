@@ -10,10 +10,10 @@ namespace BakokiWeb.Server.Data
 
         }
         public DbSet<Cliente> Clientes { get; set; }
-        /*public DbSet<ClienteCuenta> ClienteCuentas { get; set; }
+        
         public DbSet<Cuenta> Cuentas { get; set; }
-        public DbSet<CuentaTransacion> CuentaTransacions { get; set; }
-        public DbSet<Transacion> Transaciones { get; set; }*/
+        
+        public DbSet<Transacion> Transaciones { get; set; }
     }
 
 }

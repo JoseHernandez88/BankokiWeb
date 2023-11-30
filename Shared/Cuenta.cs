@@ -22,5 +22,5 @@ namespace BakokiWeb.Shared
 			= new List<Transacion>();
 
 		public Cuenta() { }	
-	}
-}
+
+		
