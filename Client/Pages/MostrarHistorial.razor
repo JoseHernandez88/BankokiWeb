@@ -1,7 +1,7 @@
 ﻿@page "/MostrarHistorial"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
-@using Bankoki_client_server_.Shared;
+@using BakokiWeb.Shared;
 
 <PageTitle>Mostrar Historial</PageTitle>
 
@@ -19,7 +19,7 @@ else
                 <th>Nombre de la cuenta</th>
                 <th>Fecha de inicio</th>
                 <th>Historial de cuenta</th>
-                <th>Fecha de culminación</th>
+                <th>Número de cuenta</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +27,9 @@ else
             {
                 <tr>
                     <td>@cuenta.AccountName</td>
-                    <td>@cuenta.OpenDate</td>
-                    <td>@cuenta.History</td>
-                    <td>@cuenta.CloseDate</td>
+                    <td>@cuenta.IsOpen</td>
+                    <td>@cuenta.Transaciones</td>
+                    <td>@cuenta.AccountNumber</td>
                 </tr>
             }
         </tbody>
@@ -38,11 +38,11 @@ else
 
 @code {
 
-    List<Accounts> cuentas = new List<Accounts>();
+    List<Cuenta> cuentas = new List<Cuenta>();
 
     protected override async Task OnInitializedAsync()
     {
-        var results = await Http.GetFromJsonAsync<List<Accounts>>("api/Accounts");
+        var results = await Http.GetFromJsonAsync<List<Cuenta>>("api/Cuenta");
         @if (results != null)
         {
             cuentas = results;
