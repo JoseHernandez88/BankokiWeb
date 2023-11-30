@@ -144,17 +144,17 @@
     private async void LoginValidation()
     {
 
-        Cliente? cli = new();
+        //Cliente? cli = new();
 
 
         if(contrasena is not null && email is not null)
         {
             try
             {
-                var result = Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
-                //notice = "entre";
-                cli = await result;
-                //notice = "entre2";
+                var result = await Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
+                notice = "entre";
+                var cli = result;
+                notice = "entre2";
 
                 if (cli is not null)
                 {
