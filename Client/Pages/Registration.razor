@@ -1,5 +1,7 @@
 ﻿@layout LoginLayout
 @inject NavigationManager NavigationManager
+@inject HttpClient HTTP
+@using BakokiWeb.Shared
 @page "/Registration"
 
 <PageTitle>Regristro</PageTitle>
@@ -155,6 +157,7 @@
     private string? email { get; set; }
     private string? contrasena { get; set; }
     private string? contrasenaConf { get; set; }
+    private Cliente cliente = new();  
 
     private string notice = "";
     //private bool reg = true;
@@ -164,6 +167,13 @@
 
         if (nombre != null && apellidos != null && tel != null && dir1 != null && dir2 != null && email != null && email.Contains("@") && email.Contains(".com") && contrasena != null && contrasenaConf != null && contrasena == contrasenaConf)
         {
+            cliente.FirstName = nombre;
+            cliente.LastName = apellidos;
+            cliente.PhoneNumber = tel;
+            cliente.AddressLine1 = dir1;
+            cliente.AddressLine2 = dir2;
+            cliente.Email = email;
+            cliente.Password = contrasena; 
             NavigationManager.NavigateTo("/MainPage");
         }
         else
