@@ -54,11 +54,12 @@ namespace BakokiWeb.Server.Controllers
 					result = cli.Value.Password.Equals(password);
 					if (result)
 					{
+						await this.LoggedIn(email);
 						return Ok(cli.Value);
 					}
 					else
 					{
-						return NotFound("Username or password do not match.");
+						return Ok(null);
 					}
 
 				}
