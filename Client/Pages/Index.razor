@@ -145,27 +145,30 @@
     {
 
         //Cliente? cli = new();
+        List<Cliente> cli = new List<Cliente>();
 
 
         if(contrasena is not null && email is not null)
         {
             try
             {
-                var result = await Http.GetFromJsonAsync<Cliente>($"api/Cliente/{contrasena}/{email}");
+                notice = "entre0";
+                var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Cliente/{contrasena}/{email}");
                 notice = "entre";
-                var cli = result;
+                cli = result;
                 notice = "entre2";
 
-                if (cli is not null)
+                if (cli.Any()==false)
                 {
-                    if (cli.Password == contrasena)
-                    {
-                        NavigationManager.NavigateTo("/MainPage");
-                    }
-                    else
-                    {
-                        notice = "Contraseña incorrecta";
-                    }
+                    notice = "entre3";
+                    //if (cli.Password == contrasena)
+                    //{
+                       // NavigationManager.NavigateTo("/MainPage");
+                    //}
+                    //else
+                    //{
+                       // notice = "Contraseña incorrecta";
+                   // }
                 }
                 else
                 {
