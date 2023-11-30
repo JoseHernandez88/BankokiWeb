@@ -8,4 +8,6 @@ namespace BakokiWeb.Server.Controllers
 	public class TransacionController : ControllerBase
 	{
 	}
+	//[HttpGet]
+
 }
