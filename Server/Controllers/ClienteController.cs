@@ -18,7 +18,7 @@ namespace BakokiWeb.Server.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<Cliente>>> GetAllClient()
+		public async Task<ActionResult<List<Cliente?>>> GetAllClient()
 		{
 			try
 			{
@@ -31,54 +31,73 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpGet("{email}")]
-		public async Task<ActionResult<Cliente>> GetClienteByEmail(string email)
+		public async Task<ActionResult<List<Cliente?>>> GetClienteByEmail(string email)
 		{
-			try
+			var cli = await _context.Clientes.FindAsync(email);
+			if (cli == null)
 			{
-				var cli = await _context.Clientes.FindAsync(email);
-				return Ok(cli);
-			} catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
+				return Ok(new List<Cliente>() );
 			}
+			return Ok(new List<Cliente>() { cli });
 		}
 		[HttpGet("{password}/{email}")]
-		public async Task<ActionResult<Cliente>> GetClienteVerifyPassword(string password, string email)
+		public async Task<ActionResult<List<Cliente?>>> GetClienteVerifyPassword(string password, string email)
 		{
 			try
 			{
-				var cli = await GetClienteByEmail(email);
-				bool result = false;
-				if (cli.Value != null)
+				var wrapper = await GetClienteByEmail(email);
+				List<Cliente?> list = new();
+				if (wrapper != null)
 				{
-					result = cli.Value.Password.Equals(password);
-					if (result)
+					if (wrapper.Value != null)
 					{
-						await this.LoggedIn(email);
-						return Ok(cli.Value);
+						list = wrapper.Value.ToList();
 					}
-					else
-					{
-						return Ok(null);
-					}
-
+					
 				}
 				else
 				{
-					throw new Exception($"Cliente Control: Could not find {email}");
+					throw new Exception("Cliente Control: Verify password lost a list.");
 				}
-			} catch (Exception ex)
+
+				bool result = false;
+				if (list.Any())
+				{
+					var cli = list.FirstOrDefault();
+					if (cli != null)
+					{
+						result = cli.Password.Equals(password);
+						if (result)
+						{
+							await this.LoggedIn(email);
+							return Ok(new List<Cliente?>() { cli });
+						}
+					}
+				}
+				return Ok(new List<Cliente?>() { });
+			}
+			catch (Exception ex)
 			{
 				return BadRequest(ex.ToString());
 			}
 		}
-		[HttpPut("{email}")]
-		public async Task<ActionResult<Cliente>> LoggedIn(string email)
+		[HttpPut("put/1/{email}")]
+		public async Task<ActionResult<Cliente?>> LoggedIn(string email)
 		{
-			var cli = await GetClienteByEmail(email);
-			if (cli.Value != null)
+			List<Cliente?> list = new();
+			var wrapper = await GetClienteByEmail(email);
+			if (wrapper.Value != null)
 			{
-				cli.Value.LoggedIn = true;
+				list=wrapper.Value.ToList();
+			}
+			else
+			{
+				throw new Exception("Cliente Controller: LoggedIn lost a list.");
+			}
+			var cli=list.FirstOrDefault();
+			if (cli != null)
+			{
+				cli.LoggedIn = true;
 				await _context.SaveChangesAsync();
 				return Ok(cli);
 			}
@@ -87,13 +106,24 @@ namespace BakokiWeb.Server.Controllers
 				return BadRequest($"Cliente Controller:Could not find {email}");
 			}
 		}
-		[HttpPut("{email}")]
-		public async Task<ActionResult<Cliente>> Loggedoff(string email)
+		[HttpPut("put/0/{email}")]
+		public async Task<ActionResult<Cliente?>> Loggedoff(string email)
 		{
-			var cli = await GetClienteByEmail(email);
-			if (cli.Value != null)
+			List<Cliente?> list = new();
+			var wrapper = await GetClienteByEmail(email);
+			if (wrapper.Value != null)
 			{
-				cli.Value.LoggedIn = false;
+				list = wrapper.Value.ToList();
+			}
+			else
+			{
+				throw new Exception("Cliente Controller: LoggedIn lost a list.");
+			}
+			var cli = list.FirstOrDefault();
+			
+			if (cli != null)
+			{
+				cli.LoggedIn = false;
 				await _context.SaveChangesAsync();
 				return Ok(cli);
 			}
@@ -103,7 +133,7 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<ActionResult<Cliente>> PostCuenta(Cliente cliente)
+		public async Task<ActionResult<Cliente?>> PostCuenta(Cliente cliente)
 		{
 			_context.Clientes.Add(cliente);
 			await _context.SaveChangesAsync();

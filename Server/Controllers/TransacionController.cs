@@ -28,6 +28,31 @@ namespace BakokiWeb.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
+		[HttpGet("{accountNumber}")]
+		public async Task<ActionResult<List<Transacion>>> GetAllTransacionByCuenta(string accountNumber)
+		{
+			try
+			{
+				var list = await _context.Transaciones.Where
+					(
+						tran=> 
+							tran.Cuenta.AccountNumber.Equals(accountNumber) &&
+							tran.Cuenta.IsOpen
+					).ToListAsync();
+				return Ok(list);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+		[HttpPost]
+		public async Task<ActionResult<List<Transacion>>> PostCuenta(Transacion tran)
+		{
+			_context.Transaciones.Add(tran);
+			await _context.SaveChangesAsync();
+			return Ok(new List<Transacion>() { tran });
+		}
 
 	}
 	

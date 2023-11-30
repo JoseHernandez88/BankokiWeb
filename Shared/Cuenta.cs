@@ -24,17 +24,21 @@ namespace BakokiWeb.Shared
 		public Cuenta() { }
 		public double Balance()
 		{
-			Int64 sum=0;
+			Int64 sum = 0;
 			if (Transaciones.Any())
 			{
-				foreach(var t in Transaciones)
+				foreach (var t in Transaciones)
 				{
 					sum = t.Sum(sum);
 				}
 			}
-			
-			return sum/100.0;
+
+			return sum / 100.0;
 		}
+		/*public bool TransferFrom(Cuenta cuentaFrom, Int64 signedCentAmount)
+		{
+			
+		}*/
 
 	}
 }

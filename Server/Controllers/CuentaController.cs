@@ -16,7 +16,7 @@ namespace BakokiWeb.Server.Controllers
 			_context = context;
 		}
 		[HttpGet]
-		public async Task<ActionResult<List<Cuenta>>> GetAllCuentas()
+		public async Task<ActionResult<List<Cuenta?>>> GetAllCuentas()
 		{
 			try
 			{
@@ -29,7 +29,7 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpGet("{email}")]
-		public async Task<ActionResult<List<Cuenta>>> GetAllCuentasByCliente(string email)
+		public async Task<ActionResult<List<Cuenta?>>> GetAllCuentasByCliente(string email)
 		{
 			try
 			{
@@ -47,7 +47,7 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpGet("{accountNumber}")]
-		public async Task<ActionResult<Cuenta>> GetCuentaByAccountNumber(string accountNumber)
+		public async Task<ActionResult<List<Cuenta?>>> GetCuentaByAccountNumber(string accountNumber)
 		{
 			try
 			{
@@ -65,28 +65,38 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<ActionResult<Cliente>> PostCuenta(Cuenta cuenta)
+		public async Task<ActionResult<List<Cuenta?>>> PostCuenta(Cuenta cuenta)
 		{
 			_context.Cuentas.Add(cuenta);
 			await _context.SaveChangesAsync();
-			return Ok(cuenta);
+			return Ok(new List<Cuenta?>() { cuenta });
 		}
 		[HttpPut("{accountNumber}/{password}")]
-		public async Task<ActionResult<bool>> PutCloseAccount(string accountNumber, string password) 
+		public async Task<ActionResult<List<bool>>> PutCloseAccount(string accountNumber, string password) 
 		{
-			var wrapper= GetCuentaByAccountNumber(accountNumber);
-			var cuenta = await wrapper;
-			if (cuenta.Value != null)
+			var list = new List<Cuenta?> { };
+			var cuenta = new Cuenta();
+			var wrapper= await GetCuentaByAccountNumber(accountNumber);
+			if (wrapper != null && wrapper.Value != null)
 			{
-				if (cuenta.Value.Cliente.Password.Equals(password))
+				list=wrapper.Value.ToList();
+				if (list.Any())
 				{
-					cuenta.Value.IsOpen = false;
+					cuenta = list.FirstOrDefault();
+				}
+			}
+			
+			if (cuenta != null)
+			{
+				if (cuenta.Cliente.Password.Equals(password))
+				{
+					cuenta.IsOpen = false;
 					await _context.SaveChangesAsync();
-					return true;
+					return new List<bool>() { true };
 				}
 				else
 				{
-					return false;
+					return new List<bool> { };
 				}
 			}
 			

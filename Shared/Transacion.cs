@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace BakokiWeb.Shared
 		public DateTime FilledAt { get; set; }
 		public string Origin { get; set; } 
 			= "";
+		public Cuenta Cuenta { get; set; } 
+			= new Cuenta();
 		public Transacion() { }
 		public Int64 SignedCentValue() 
 		{ 
