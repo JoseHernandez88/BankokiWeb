@@ -103,12 +103,12 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<ActionResult<Cuenta>> PostCuenta(Cuenta cuenta)
+		public async Task<ActionResult<Cliente>> PostCuenta(Cliente cliente)
 		{
-			_context.Cuentas.Add(cuenta);
+			_context.Clientes.Add(cliente);
 			await _context.SaveChangesAsync();
 
-			return Ok(cuenta);
+			return Ok(cliente);
 		}
 
 	}
