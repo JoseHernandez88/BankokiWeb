@@ -151,92 +151,61 @@
 
         if(contrasena is not null && email is not null)
         {
-            try
+            if(email.Contains("@") && email.Contains("."))
             {
-                notice = "entre0";
-                var result = await Http.GetFromJsonAsync<List<Cliente?>>($"api/Cliente/{contrasena}/{email}");
-                Console.WriteLine("message:",result.ToString());
-                /*if (result != null)
+                try
                 {
-                //A test comment when ready.
-                Console.WriteLine(result.ToString());
-                }
-                else
-                {
-                Console.WriteLine("Result was null.");
-            }*/
+                    var result = await Http.GetFromJsonAsync<List<Cliente?>>($"api/Cliente/{contrasena}/{email}");
+                    Console.WriteLine("message:", result.ToString());
 
-                if (result != null)
-                {
-                    list = result.ToList();
 
-                    if(list.Any())
+                    if (result != null)
                     {
-                        cli = list.FirstOrDefault();
-                        if (cli is null)
+                        list = result.ToList();
+
+                        if (list.Any())
                         {
-                            //Replace with validatoion false tree.
-                            Console.WriteLine("Client value was null.");
+                            cli = list.FirstOrDefault();
+                            if (cli is null)
+                            {
+                                //Replace with validatoion false tree.
+                                Console.WriteLine("Client value was null.");
+                                notice = "Ocurrio un error con su email o contraseña";
+                            }
+                            else
+                            {
+                                //Replace with validation posative tree.
+                                if(contrasena == cli.Password)
+                                {
+                                    NavigationManager.NavigateTo("/MainPage");
+                                }
+                                else
+                                {
+                                    notice = "Contraseña incorrecta";
+                                }
+                                Console.WriteLine("Last name: ", cli.LastName.ToString());
+                            }
                         }
                         else
                         {
-                            //Replace with validation posative tree.
-                            Console.WriteLine("Last name: ",cli.LastName.ToString());
+                            throw new Exception("Index Page: Has lost a list.");
                         }
                     }
-                    else
-                    {
-                        throw new Exception("Index Page: Has lost a list.");
-                    }
                 }
-
-                notice = "entre2";
-
-                /*if (cli.Any()==false)
+                catch (Exception ex)
                 {
-                    notice = "entre3";
-                    //if (cli.Password == contrasena)
-                    //{
-                       // NavigationManager.NavigateTo("/MainPage");
-                    //}
-                    //else
-                    //{
-                       // notice = "Contraseña incorrecta";
-                   // }
+
+                    Console.WriteLine(ex.ToString());
                 }
-                else
-                {
-                    notice = "No se encontro el usuario";
-                }*/
-            } 
-            catch (Exception ex)
+            }
+            else
             {
-                
-                Console.WriteLine(ex.ToString());
+                notice = "Email invalido";
             }
         }
-
-        //if (email != null && contrasena != null)
-        //{
-            //if (email.Contains("@") && email.Contains(".com"))
-            //{
-                //if (email == "hola@gmail.com" && contrasena == "1234")
-                //{
-                    //NavigationManager.NavigateTo("/MainPage");
-                //}
-                //else
-                //{
-                   // notice = "Contraseña incorrecta";
-                //}
-            //}
-            //else
-            //{
-                //notice = "Porfavor ingrese email valido";
-            //}
-        //}
-        //else
-        //{
-            //notice = "Porfavor ingrese email y contraseña";
-        //}
+        else
+        {
+            notice = "Porfavor ingrese su email y su contraseña";
+        }
     }
 }
