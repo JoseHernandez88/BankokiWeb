@@ -60,7 +60,7 @@ else
 
                 <div class="balance-actual ml-auto p-2 d-flex align-self-center justify-content-center">
 
-                    <Tooltip Text="Presione aquí borrar su cuenta."><button @onclick="CancelAccount" class="btn btn-primary m-2"> Borrar la cuenta</button></Tooltip>
+                                    <Tooltip Text="Presione aquí borrar su cuenta."><button  class="btn btn-primary m-2"> Borrar la cuenta</button></Tooltip>
 
                     <Tooltip Text="Presione aquí para poder ver el historial de la cuenta."><button @onclick="ShowHistory" class="btn btn-primary m-2"> Ver historial</button></Tooltip>
 
@@ -84,7 +84,7 @@ else
     public string? email { get; set; }
     public List<Cuenta> cuentas = new();
 
-
+    public Cuenta cuenta = new();
     public Cliente? cli = new();
 
     protected override async Task OnInitializedAsync()
@@ -115,10 +115,9 @@ else
     }
 
 
-    void CancelAccount() 
-    { 
-        
-        Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{cuenta.AccountNumber}/{cnt.Cliente.Password}",cnt); 
+    void cancleAccount(Cuenta cnt)
+    {
+        cnt.Close(Http);
     }
 
 
