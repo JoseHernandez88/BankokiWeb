@@ -72,19 +72,22 @@ namespace BakokiWeb.Server.Controllers
 
 			if (cli != null)
 			{
+				Console.WriteLine(cli.Email);
 				cli.LoggedIn = true;
 				await _context.SaveChangesAsync();
 				return Ok(cli);
 			}
 			else
 			{
-				return BadRequest($"Cliente Controller:Could not find {email}");
+                Console.WriteLine("email not found");
+                return BadRequest($"Cliente Controller:Could not find {email}");
 			}
 		}
 		[HttpPut("put/0/{email}")]
 		public async Task<ActionResult<Cliente?>> Loggedoff(string email)
 		{
             var cli = await _context.Clientes.FindAsync(email);
+
             
 			if (cli != null)
 			{
