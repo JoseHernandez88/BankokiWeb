@@ -22,9 +22,41 @@
 
             <div class="d-flex justify-content-around">
 
-                <img src="Images/ElegirCuenta.png" style="width:300px; height:300px; margin:15px;" class="rounded" />
-                <h1 class="d-flex align-self-center text-secondary"><span class="oi oi-transfer" aria-hidden="true"></span> </h1>
-                <img src="Images/ElegirCuenta.png" style="width:300px; height:300px; margin:15px;" class="rounded" />
+                    <div class="d-flex flex-column text-center">
+
+                        <img src="Images/ElegirCuenta.png" style="width:300px; height:300px; margin:15px;" class="rounded" />
+
+                        @{ var account1 = new List<string> { "cuenta1", "cuenta1"}; }
+
+                        <Dropdown TItem="string" OnSelected="@OnSelected">
+                            <InitialTip>This is a dropdown list</InitialTip>
+                            <ChildContent>
+                                <DropdownListItem Item="@account1[0]">cuenta1</DropdownListItem>
+                                <DropdownListItem Item="@account1[1]">cuenta1</DropdownListItem>
+                            </ChildContent>
+                        </Dropdown>
+
+                    </div>
+
+
+                    <h1 class="d-flex align-self-center text-secondary"><span class="oi oi-transfer" aria-hidden="true"></span></h1>
+
+                    <div class="d-flex flex-column text-center">
+
+                        <img src="Images/ElegirCuenta.png" style="width:300px; height:300px; margin:15px;" class="rounded" />
+
+
+                        @{ var account2 = new List<string> { "cuenta1", "cuenta2" }; }
+
+                        <Dropdown TItem="string" OnSelected="@OnSelected">
+                            <InitialTip>This is a dropdown list</InitialTip>
+                            <ChildContent>
+                                <DropdownListItem Item="@account2[0]">cuenta1</DropdownListItem>
+                                <DropdownListItem Item="@account2[1]">cuenta2</DropdownListItem>
+                            </ChildContent>
+                        </Dropdown>
+
+                    </div>
 
             </div>
 
