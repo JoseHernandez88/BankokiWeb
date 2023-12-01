@@ -64,7 +64,7 @@ else
 
                     <Tooltip Text="Presione aquí para poder ver el historial de la cuenta."><button @onclick="ShowHistory" class="btn btn-primary m-2"> Ver historial</button></Tooltip>
 
-                    <h3 class="m-2"> @Balance() </h3>
+                    <h3 class="m-2"> @cuenta.Balance() </h3>
 
                 </div>
 
@@ -115,12 +115,10 @@ else
     }
 
 
-    void CancelAccount(string AccountNumber) 
+    void CancelAccount() 
     { 
-        var result =  Http.GetFromJsonAsync<List<Cuenta>>($"Cuenta/{AccountNumber}")
-        var list = result.Result;
-        var cuenta = list.FirstOrDefault();
-        Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{AccountNumber}/{cli.Password}",cuenta); 
+        
+        Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{cuenta.AccountNumber}/{cnt.Cliente.Password}",cnt); 
     }
 
 

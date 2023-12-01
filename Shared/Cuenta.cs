@@ -72,6 +72,11 @@ namespace BakokiWeb.Shared
 			}
 			return false;
 		}
+		public void Close(HttpClient Http)
+		{
+			Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{AccountNumber}/{Cliente.Password}", this);
+
+        }
 		
 	}
 }
