@@ -80,49 +80,48 @@ else
 
 @code {
 
-        [Parameter]
-        public string? email { get; set; }
+    [Parameter]
+    public string? email { get; set; }
+    public List<Cuenta> cuentas = new();
 
 
-        public List<Cliente> cuentas = new List<Cliente>();
-        public Cliente? cli = new();
+    public Cliente? cli = new();
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        List<Cliente> list = new List<Cliente>();
+        var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
+        if (result is not null)
         {
-            var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
-            if (result is not null)
+            list = result.ToList();
+            if (list.Any())
             {
-                list = result.ToList();
-                if (list.Any())
-                {
-                    cli = list.FirstOrDefault();
-                }
-            }
-
-        
-
-        void ShowHistory()
-        {
-            NavigationManager.NavigateTo($"/MostrarHistorial/{email}");
-        }
-
-
-        void CancelAccount()
-        {
-            cuentas.PutCloseAccount();
-        }
-
-
-        protected override async Task OnInitializedAsync()
-        {
-            var results = await Http.GetFromJsonAsync<List<Cuenta>>("api/Cuenta");
-            @if (results != null)
-            {
-                cuentas = results;
+                cli = list.FirstOrDefault();
             }
         }
-
+        var result2 = await Http.GetFromJsonAsync<List<Cuenta>>($"api/Cuenta/{email}");
+        @if(result2 != null)
+        {
+            cuentas = result2.ToList();
+        }
 
     }
 
-}
+
+
+    void ShowHistory()
+    {
+        NavigationManager.NavigateTo($"/MostrarHistorial/{email}");
+    }
+
+
+    void CancelAccount(string AccountNumber) 
+    { 
+        var result =  Http.GetFromJsonAsync<List<Cuenta>>($"Cuenta/{AccountNumber}")
+        var list = result.Result;
+        var cuenta = list.FirstOrDefault();
+        Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{AccountNumber}/{cli.Password}",cuenta); 
+    }
+
+
+    }
