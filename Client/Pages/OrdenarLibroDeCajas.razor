@@ -1,7 +1,8 @@
 ﻿@page "/OrdenarLibroDeCajas"
+@page "/OrdenarLibroDeCajas/{email}"
 @layout LoginLayout
 @inject NavigationManager NavigationManager
-@inject HttpClient HTTP
+@inject HttpClient Http
 @using BakokiWeb.Shared
 
 <PageTitle>Request Checkbook</PageTitle>
@@ -92,11 +93,61 @@
 </body>
 
 @code {
+    [Parameter]
+    public string? email { get; set; }
+    public List<Cliente> list = new();
+    public Cliente? cli = new();
     private string? numeroCuenta { get; set; }
     private string? razon { get; set; }
     private string notice = "";
 
-    private void RequestCheckbook()
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
+        if (result is not null)
+        {
+            list = result.ToList();
+            if (list.Any())
+            {
+                cli = list.FirstOrDefault();
+            }
+        }
+    }
+
+
+    void NavCuenta()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/Cuenta/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
+    }
+
+    void NavTransfer()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
+    }
+
+    void NavOrdenarLibroDeCaja()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
+    }
+
+
+
+    private async void RequestCheckbook()
     {
 
         var cliente = new Cliente();
@@ -104,8 +155,21 @@
         // Perform validation and submit the request
         if (numeroCuenta != null && razon != null)
         {
-                var cliente = new Cliente();
-                cliente.OrderBook(numeroCuenta, razon);
+            List<Cuenta> list = new();
+            Cuenta? cuenta = new();
+            var results = await Http.GetFromJsonAsync<List<Cuenta>>($"Cuenta/get/1/{numeroCuenta}");
+            if (results != null)
+            {
+                list = results.ToList();
+                if (list.Any())
+                {
+                    cuenta = list.FirstOrDefault();
+                }
+            }
+            if (cli != null && cuenta != null)
+            {
+                cli.OrderBook(cuenta, razon);
+            }
         }
         else
         {

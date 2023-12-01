@@ -2,6 +2,7 @@
 @page "/MostrarHistorial/{email}"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
+
 @using BakokiWeb.Shared;
 
 <PageTitle>Mostrar Historial</PageTitle>
@@ -42,7 +43,8 @@ else
     public string? email { get; set; }
 
 
-    List<Cuenta> cuentas = new List<Cuenta>();
+    public List<Cuenta> cuentas = new List<Cuenta>();
+    public Cliente? cli = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,14 +60,45 @@ else
             }
         }
 
-
-        var results = await Http.GetFromJsonAsync<List<Cuenta>>($"api/Cuenta/{cli.Email}");
-        @if (results != null)
+        if (cli is not null)
         {
-            cuentas = results;
+            var results = await Http.GetFromJsonAsync<List<Cuenta>>($"api/Cuenta/{cli.Email}");
+            @if (results != null)
+            {
+                cuentas = results;
+            }
         }
+       
+    }
+    void NavCuenta()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/Cuenta/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
     }
 
+    void NavTransfer()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
+    }
+
+    void NavOrdenarLibroDeCaja()
+    {
+        if (cli is not null)
+        {
+            NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+        }
+        NavigationManager.NavigateTo($"/index");
+
+    }
 }
 
 

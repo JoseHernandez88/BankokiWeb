@@ -46,7 +46,7 @@ namespace BakokiWeb.Server.Controllers
 				return BadRequest(ex.Message);
 			}
 		}
-		[HttpGet("{accountNumber}")]
+		[HttpGet("get/1/{accountNumber}")]
 		public async Task<ActionResult<List<Cuenta?>>> GetCuentaByAccountNumber(string accountNumber)
 		{
 			try

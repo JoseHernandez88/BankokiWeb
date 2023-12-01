@@ -1,5 +1,7 @@
 ﻿@page "/Transfer"
+@page "/Transfer/{email}"
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 @using BakokiWeb.Shared;
 
 
@@ -33,3 +35,56 @@
 
 </div>
 
+@code{
+        [Parameter]
+        public string? email { get; set; }
+
+
+        public List<Cuenta> cuentas = new List<Cuenta>();
+        public Cliente? cli = new();
+
+        protected override async Task OnInitializedAsync()
+        {
+            List<Cliente> list = new();
+            Cliente? cli = new();
+            var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
+            if (result is not null)
+            {
+                list = result.ToList();
+                if (list.Any())
+                {
+                    cli = list.FirstOrDefault();
+                }
+            }
+
+        void NavCuenta()
+        {
+            if (cli is not null)
+            {
+                NavigationManager.NavigateTo($"/Cuenta/{cli.Email}");
+            }
+            NavigationManager.NavigateTo($"/index");
+
+        }
+
+        void NavTransfer()
+        {
+            if (cli is not null)
+            {
+                NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+            }
+            NavigationManager.NavigateTo($"/index");
+
+        }
+
+        void NavOrdenarLibroDeCaja()
+        {
+            if (cli is not null)
+            {
+                NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+            }
+            NavigationManager.NavigateTo($"/index");
+
+        }
+}
+}

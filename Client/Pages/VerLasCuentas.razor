@@ -1,6 +1,7 @@
 ﻿@page "/Cuenta"
-@inject HttpClient Http
+@page "/Cuenta/{email}"
 @inject NavigationManager NavigationManager
+@inject HttpClient Http 
 @using BakokiWeb.Shared
 
 
@@ -78,29 +79,50 @@ else
 
 
 @code {
-    List<Cuenta> cuentas = new List<Cuenta>();
 
-    void ShowHistory()
-    {
-        NavigationManager.NavigateTo($"/MostrarHistorial/{cli.Email}");
-    }
+        [Parameter]
+        public string? email { get; set; }
 
 
-    void CancelAccount()
-    {
-        cuentas.PutCloseAccount();
-    }
+        public List<Cliente> cuentas = new List<Cliente>();
+        public Cliente? cli = new();
 
-
-    protected override async Task OnInitializedAsync()
-    {
-        var results = await Http.GetFromJsonAsync<List<Cuenta>>("api/Cuenta");
-        @if (results != null)
+        protected override async Task OnInitializedAsync()
         {
-            cuentas = results;
-        }
-    }
+            var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
+            if (result is not null)
+            {
+                list = result.ToList();
+                if (list.Any())
+                {
+                    cli = list.FirstOrDefault();
+                }
+            }
 
+        
+
+        void ShowHistory()
+        {
+            NavigationManager.NavigateTo($"/MostrarHistorial/{email}");
+        }
+
+
+        void CancelAccount()
+        {
+            cuentas.PutCloseAccount();
+        }
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            var results = await Http.GetFromJsonAsync<List<Cuenta>>("api/Cuenta");
+            @if (results != null)
+            {
+                cuentas = results;
+            }
+        }
+
+
+    }
 
 }
-

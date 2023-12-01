@@ -34,9 +34,7 @@
 
 @code {
 
-    [Parameters]
-
-    public string email {get; set;}
+    
 
     private bool collapseNavMenu = true;
 
@@ -47,21 +45,8 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    void NavCuenta()
-    {
-        NavigationManager.NavigateTo($"/Cuenta/{cli.Email}");
-    }
 
-    void NavTransfer()
-    {
-        NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
-    }
-
-    void NavOrdenarLibroDeCaja()
-    {
-        NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
-    }
-    $"<page>/{cli.Email}"
+    
 
 
 
