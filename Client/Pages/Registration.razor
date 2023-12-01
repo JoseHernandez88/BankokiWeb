@@ -1,7 +1,7 @@
 ﻿@layout LoginLayout
 @inject NavigationManager NavigationManager
-@inject HttpClient Http
-@using BakokiWeb.Shared;
+@inject HttpClient HTTP
+@using BakokiWeb.Shared
 @page "/Registration"
 
 <PageTitle>Regristro</PageTitle>
@@ -167,15 +167,13 @@
 
         if (nombre != null && apellidos != null && tel != null && dir1 != null && dir2 != null && email != null && email.Contains("@") && email.Contains(".") && contrasena != null && contrasenaConf != null && contrasena == contrasenaConf)
         {
-            var cliente = new Cliente() { };
             cliente.FirstName = nombre;
             cliente.LastName = apellidos;
             cliente.PhoneNumber = tel;
             cliente.AddressLine1 = dir1;
             cliente.AddressLine2 = dir2;
             cliente.Email = email;
-            cliente.Password = contrasena;
-            var message = Http.PostAsJsonAsync("api/Cliente", cliente);
+            cliente.Password = contrasena; 
             NavigationManager.NavigateTo("/MainPage");
         }
         else

@@ -15,17 +15,17 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Cuenta">
+            <NavLink class="nav-link" @onclick="NavCuenta">
                 <span class="oi oi-credit-card" aria-hidden="true"></span> Ver cuentas
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Transfer">
+            <NavLink class="nav-link" @onclick="NavTransfer">
                 <span class="oi oi-transfer" aria-hidden="true"></span> Transferir de cuenta
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="OrdenarLibroDeCajas">
+            <NavLink class="nav-link" @onclick="NavOrdenarLibroDeCaja">
                 <span class="oi oi-book" aria-hidden="true"></span> Ordenar libro de cajas
             </NavLink>
         </div>
@@ -33,6 +33,11 @@
 </div>
 
 @code {
+
+    [Parameters]
+
+    public string email {get; set;}
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -41,4 +46,23 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    void NavCuenta()
+    {
+        NavigationManager.NavigateTo($"/Cuenta/{cli.Email}");
+    }
+
+    void NavTransfer()
+    {
+        NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+    }
+
+    void NavOrdenarLibroDeCaja()
+    {
+        NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+    }
+    $"<page>/{cli.Email}"
+
+
+
 }

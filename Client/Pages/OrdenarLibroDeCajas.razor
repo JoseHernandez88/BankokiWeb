@@ -1,4 +1,4 @@
-﻿@page "/CheckbookRequest"
+﻿@page "/OrdenarLibroDeCajas"
 @layout LoginLayout
 @inject NavigationManager NavigationManager
 @inject HttpClient HTTP
@@ -98,19 +98,19 @@
 
     private void RequestCheckbook()
     {
+
+        var cliente = new Cliente();
+
         // Perform validation and submit the request
         if (numeroCuenta != null && razon != null)
         {
-            // Example: Send a request to the server to process the checkbook request
-            // Create an API endpoint on the server to handle request
-            // and update the client-side logic accordingly.
-
-            // After a successful request navigate to another page
-            NavigationManager.NavigateTo("/CheckbookRequested");
+                var cliente = new Cliente();
+                cliente.OrderBook(numeroCuenta, razon);
         }
         else
         {
             notice = "Please fill in all required fields.";
         }
     }
+
 }
