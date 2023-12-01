@@ -177,7 +177,7 @@
                                 //Replace with validation posative tree.
                                 if(contrasena == cli.Password)
                                 {
-                                    NavigationManager.NavigateTo("/MainPage");
+                                    NavigationManager.NavigateTo($"/MainPage/{cli.Email}");
                                 }
                                 else
                                 {
