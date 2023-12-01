@@ -46,7 +46,15 @@
     }
 
 
-    
+    void NavTransfer()
+    {
+        NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+    }
+
+    void NavOrdenarLibroDeCaja()
+    {
+        NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+    }
 
 
 
