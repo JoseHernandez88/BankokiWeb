@@ -99,7 +99,7 @@ namespace BakokiWeb.Server.Controllers
 					return new List<bool> { };
 				}
 			}
-			
+		 	
 			return BadRequest("No such account."); 
 		}
 

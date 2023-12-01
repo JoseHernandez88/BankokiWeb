@@ -165,7 +165,7 @@
     private void RegisterValidation()
     {
 
-        if (nombre != null && apellidos != null && tel != null && dir1 != null && dir2 != null && email != null && email.Contains("@") && email.Contains(".com") && contrasena != null && contrasenaConf != null && contrasena == contrasenaConf)
+        if (nombre != null && apellidos != null && tel != null && dir1 != null && dir2 != null && email != null && email.Contains("@") && email.Contains(".") && contrasena != null && contrasenaConf != null && contrasena == contrasenaConf)
         {
             cliente.FirstName = nombre;
             cliente.LastName = apellidos;
@@ -182,7 +182,7 @@
             {
                 notice = "Ocurrio un error con su contraseña";
             }
-            else if (email == null || !email.Contains("@") || !email.Contains(".com"))
+            else if (email == null || !email.Contains("@") || !email.Contains("."))
             {
                 notice = "Porfavor ingrese email valido";
             }
