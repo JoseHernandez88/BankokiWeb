@@ -1,6 +1,5 @@
 ﻿using BakokiWeb.Server.Data;
 using BakokiWeb.Shared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +47,7 @@ namespace BakokiWeb.Server.Controllers
 			}
 		}
 		[HttpPost]
-		public async Task<ActionResult<List<Transacion>>> PostCuenta(Transacion tran)
+		public async Task<ActionResult<List<Transacion>>> PostaTransacion(Transacion tran)
 		{
 			_context.Transaciones.Add(tran);
 			await _context.SaveChangesAsync();

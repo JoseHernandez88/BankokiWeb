@@ -89,7 +89,7 @@ namespace BakokiWeb.Server.Controllers
 
 			if (cli != null)
 			{
-				Console.WriteLine(cli.Email);
+				//Console.WriteLine(cli.Email);
 				cli.LoggedIn = true;
 				await _context.SaveChangesAsync();
 				return Ok(cli);
