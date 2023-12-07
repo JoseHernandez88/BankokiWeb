@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using BakokiWeb.Shared;
+
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">BakokiWeb</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -34,7 +37,7 @@
 
 @code {
 
-    
+
 
     private bool collapseNavMenu = true;
 
@@ -48,12 +51,16 @@
 
     void NavTransfer()
     {
-        NavigationManager.NavigateTo($"/Transfer/{cli.Email}");
+        NavigationManager.NavigateTo("/Transfer");
     }
 
     void NavOrdenarLibroDeCaja()
     {
-        NavigationManager.NavigateTo($"/OrdenarLibroDeCaja/{cli.Email}");
+        NavigationManager.NavigateTo("/OrdenarLibroDeCaja");
+    }
+    void NavCuenta()
+    {
+        NavigationManager.NavigateTo("/Cuenta");
     }
 
 
