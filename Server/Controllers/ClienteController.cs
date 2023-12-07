@@ -3,6 +3,8 @@ using BakokiWeb.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace BakokiWeb.Server.Controllers
 {
@@ -16,6 +18,21 @@ namespace BakokiWeb.Server.Controllers
 		{
 			_context = context;
 		}
+
+	/*	private string MakeToken(Cliente cli) 
+		{
+			List<Claim> claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.Name, cli.Email)
+			};
+			var token = new JwtSecurityToken
+				(
+					claims:claims,  
+					expires:DateTime.Now.AddHours(1)
+				);
+			var jasonToken = new JwtSecurityTokenHandler().WriteToken(token);
+			return jasonToken;
+		}*/
 
 		[HttpGet]
 		public async Task<ActionResult<List<Cliente?>>> GetAllClient()
@@ -108,6 +125,6 @@ namespace BakokiWeb.Server.Controllers
 
 			return Ok(cliente);
 		}
-
+		
 	}
 }

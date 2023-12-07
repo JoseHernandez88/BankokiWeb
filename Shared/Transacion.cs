@@ -1,14 +1,8 @@
-﻿using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BakokiWeb.Shared
 {
-	public class Transacion
+    public class Transacion
 	{
 		[Key]
 		public Int64 TransactionID { get; set; }

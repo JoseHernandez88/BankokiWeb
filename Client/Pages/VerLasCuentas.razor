@@ -1,5 +1,5 @@
 ﻿@page "/Cuenta"
-@page "/Cuenta/{email}"
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
 @inject NavigationManager NavigationManager
 @inject HttpClient Http 
 @using BakokiWeb.Shared
@@ -80,8 +80,7 @@ else
 
 @code {
 
-    [Parameter]
-    public string? email { get; set; }
+
     public List<Cuenta> cuentas = new();
 
     public Cuenta cuenta = new();
@@ -89,6 +88,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var email = LocalStore.GetItemAsStringAsync("email");
         List<Cliente> list = new List<Cliente>();
         var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
         if (result is not null)
@@ -111,14 +111,26 @@ else
 
     void ShowHistory()
     {
-        NavigationManager.NavigateTo($"/MostrarHistorial/{email}");
+        if(cli is not null)
+        {
+            NavigationManager.NavigateTo($"/MostrarHistorial/{cli.Email}");
+        }
+        NavigationManager.NavigateTo("/");
     }
 
 
     void cancleAccount(Cuenta cnt)
     {
-        cnt.Close(Http);
-    }
+        if (cli is not null)
+        {
+            Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{cnt.AccountNumber}/{cli.Password}", cnt);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
 
+    }
+    
 
     }

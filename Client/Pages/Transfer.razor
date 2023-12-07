@@ -1,10 +1,9 @@
 ﻿@page "/Transfer"
-@page "/Transfer/{email}"
+
 @inject HttpClient Http
-@inject NavigationManager NavigationManager
 @using BakokiWeb.Shared;
 
-
+@* 
 <PageTitle>Transfer</PageTitle>
 
 <div class="container ">
@@ -68,27 +67,31 @@
 </div>
 
 @code{
-        [Parameter]
-        public string? email { get; set; }
+    
 
 
-        public List<Cuenta> cuentas = new List<Cuenta>();
-        public Cliente? cli = new();
+    public List<Cuenta> cuentas = new List<Cuenta>();
+    public Cliente? cli = new();
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        List<Cliente> list = new();
+        Cliente? cli = new();
+        var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
+        if (result is not null)
         {
-            List<Cliente> list = new();
-            Cliente? cli = new();
-            var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
-            if (result is not null)
+            list = result.ToList();
+            if (list.Any())
             {
-                list = result.ToList();
-                if (list.Any())
-                {
-                    cli = list.FirstOrDefault();
-                }
+                cli = list.FirstOrDefault();
             }
-
+        }
+        void OnSelected(string selection)
+        {
+            Console.WriteLine(selection);
+        }
+        }
+        /*
         void NavCuenta()
         {
             if (cli is not null)
@@ -118,11 +121,8 @@
             NavigationManager.NavigateTo($"/index");
 
         }
+        */
+        
 
-        private void OnSelected(string selection)
-        {
-            Console.WriteLine(selection);
-        }
-
-}
-}
+    }
+ *@}

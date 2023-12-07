@@ -1,5 +1,6 @@
 ﻿using BakokiWeb.Server.Data;
 using BakokiWeb.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -74,13 +75,13 @@ namespace BakokiWeb.Server.Controllers
 		[HttpPut("{accountNumber}/{password}")]
 		public async Task<ActionResult<List<bool>>> PutCloseAccount(string accountNumber, string password) 
 		{
-			var list = new List<Cuenta?> { };
-			var cuenta = new Cuenta();
+            _ = new List<Cuenta?> { };
+            var cuenta = new Cuenta();
 			var wrapper= await GetCuentaByAccountNumber(accountNumber);
 			if (wrapper != null && wrapper.Value != null)
 			{
-				list=wrapper.Value.ToList();
-				if (list.Any())
+                List<Cuenta?>? list = wrapper.Value.ToList();
+                if (list.Any())
 				{
 					cuenta = list.FirstOrDefault();
 				}

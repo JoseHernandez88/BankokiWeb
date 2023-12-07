@@ -1,5 +1,5 @@
 ﻿@page "/MostrarHistorial"
-@page "/MostrarHistorial/{email}"
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -39,8 +39,7 @@ else
 }
 
 @code {
-    [Parameter]
-    public string? email { get; set; }
+
 
 
     public List<Cuenta> cuentas = new List<Cuenta>();
@@ -48,6 +47,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var email = await LocalStore.GetItemAsStringAsync("email");
         List<Cliente> list = new();
         Cliente? cli = new();
         var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
@@ -62,6 +62,7 @@ else
 
         if (cli is not null)
         {
+            //cli.cuenta contiene las cuentas de cli
             var results = await Http.GetFromJsonAsync<List<Cuenta>>($"api/Cuenta/{cli.Email}");
             @if (results != null)
             {
@@ -70,7 +71,7 @@ else
         }
        
     }
-    void NavCuenta()
+    /*void NavCuenta()
     {
         if (cli is not null)
         {
@@ -98,7 +99,7 @@ else
         }
         NavigationManager.NavigateTo($"/index");
 
-    }
+    }*/
 }
 
 

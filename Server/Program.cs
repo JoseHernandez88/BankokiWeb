@@ -1,19 +1,18 @@
 using BakokiWeb.Server.Data;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-
-
 
 
 var builder = WebApplication.CreateBuilder(args);
 string? connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
 // Add services to the container.
+
+
 try
 {
 	if (connection != null)
 	{
-		builder.Services.AddDbContext<DataContext>(options =>
+        builder.Services.AddDbContext<DataContext>(options =>
 			options.UseSqlServer(connection, options => options.EnableRetryOnFailure()));
 	}
 	else
@@ -34,7 +33,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseWebAssemblyDebugging();
+	//app.UseWebAssemblyDebugging();
 }
 else
 {
@@ -45,7 +44,7 @@ else
 
 app.UseHttpsRedirection();
 
-app.UseBlazorFrameworkFiles();
+//app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();

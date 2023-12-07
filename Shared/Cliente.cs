@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using GemBox.Email;
+﻿using GemBox.Email;
 using GemBox.Email.Smtp;
+using System.ComponentModel.DataAnnotations;
 
 namespace BakokiWeb.Shared
 {
-	public class Cliente
+    public class Cliente
 	{
 		[Key]
 		public string Email { get; set; }
@@ -34,30 +28,30 @@ namespace BakokiWeb.Shared
 		public Cliente() { }
         public void OrderBook(Cuenta cuenta,string Reason)
         {
-            MailMessage message = new MailMessage(
-				new MailAddress("bankoki.services@gmail.com", "Sender"),
-				new MailAddress("bankoki.services@gmail.com",
-				"First receiver"));
-            message.Subject = "How to send an Email programmatically in C#  ASP.NET";
-            message.BodyText = "Hi,\n" +
-             $"Client {FirstName} {LastName}, {Email}.\n" +
-			 $"wishes to order a new check book for their {cuenta.AccountName} account " +
-			 $"with account number {cuenta.AccountNumber}. For the following reason: " +
-			 $"{Reason}. Please mail the book to: \n" +
-			 $"{FirstName} {LastName}\n" +
-			 $"{AddressLine1}\n" +
-			 $"{AddressLine2}\n" +
-			 $"And contat them to {PhoneNumber} in case of any isssues." +
-			 $"Best Wishes,\n" +
-			 $"Your banking app alway Bankoki." +
-             "Read more about it on https://www.gemboxsoftware.com/email";
-
-            using (SmtpClient smtp = new SmtpClient("bankoki.services@gmail.com"))
+            var message = new MailMessage(
+                new MailAddress("bankoki.services@gmail.com", "Sender"),
+                new MailAddress("bankoki.services@gmail.com",
+                "First receiver"))
             {
-                smtp.Connect();
-                smtp.Authenticate("bankoki.services@gmail.com", "<Algobuenoyfacil01>");
-                smtp.SendMessage(message);
-            }
+                Subject = "How to send an Email programmatically in C#  ASP.NET",
+                BodyText = "Hi,\n" +
+             $"Client {FirstName} {LastName}, {Email}.\n" +
+             $"wishes to order a new check book for their {cuenta.AccountName} account " +
+             $"with account number {cuenta.AccountNumber}. For the following reason: " +
+             $"{Reason}. Please mail the book to: \n" +
+             $"{FirstName} {LastName}\n" +
+             $"{AddressLine1}\n" +
+             $"{AddressLine2}\n" +
+             $"And contat them to {PhoneNumber} in case of any isssues." +
+             $"Best Wishes,\n" +
+             $"Your banking app alway Bankoki." +
+             "Read more about it on https://www.gemboxsoftware.com/email"
+            };
+
+            using var smtp = new SmtpClient("bankoki.services@gmail.com");
+            smtp.Connect();
+            smtp.Authenticate("bankoki.services@gmail.com", "<Algobuenoyfacil01>");
+            smtp.SendMessage(message);
         }
     }
 

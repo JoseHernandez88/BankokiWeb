@@ -1,5 +1,5 @@
 ﻿@page "/OrdenarLibroDeCajas"
-@page "/OrdenarLibroDeCajas/{email}"
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
 @layout LoginLayout
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
@@ -93,8 +93,7 @@
 </body>
 
 @code {
-    [Parameter]
-    public string? email { get; set; }
+
     public List<Cliente> list = new();
     public Cliente? cli = new();
     private string? numeroCuenta { get; set; }
@@ -103,6 +102,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var email = LocalStore.GetItemAsStringAsync("email");
         var result = await Http.GetFromJsonAsync<List<Cliente>>($"api/Client/{email}");
         if (result is not null)
         {

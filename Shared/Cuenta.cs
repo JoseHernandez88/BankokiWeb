@@ -1,16 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BakokiWeb.Shared
 {
-	public class Cuenta
+    public class Cuenta
 	{
 		[Key]
 		public string AccountNumber { get; set; }
@@ -72,11 +65,7 @@ namespace BakokiWeb.Shared
 			}
 			return false;
 		}
-		public void Close(HttpClient Http)
-		{
-			Http.PutAsJsonAsync<Cuenta>($"api/Cuenta/{AccountNumber}/{Cliente.Password}", this);
-
-        }
+		
 		
 	}
 }

@@ -1,6 +1,7 @@
 ﻿@layout LoginLayout
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
 @using BakokiWeb.Shared
 @page "/"
 
@@ -136,17 +137,29 @@
 
 @code {
     [Parameter]
-    public string contrasena { get; set; }
-    private string email { get; set; }
-    string notice = "";
+    public string contrasena { get; set; } 
+        = "";
+    private string email { get; set; } 
+        = "";
+    string notice 
+        = "";
 
-
+    protected override async Task OnInitializedAsync()
+    {
+        var userId = await LocalStore.GetItemAsync<string>("email");
+        if(userId is not null)
+        {
+            NavigationManager.NavigateTo("/MainPage");
+        }
+    }
     private async void LoginValidation()
     {
 
         //Cliente? cli = new();
         Cliente? cli = new();
         List<Cliente?> list = new();
+
+
 
 
         if(contrasena is not null && email is not null)
@@ -156,7 +169,8 @@
                 try
                 {
                     var result = await Http.GetFromJsonAsync<List<Cliente?>>($"api/Cliente/{contrasena}/{email}");
-                    Console.WriteLine("message:", result.ToString());
+                    
+                    
 
 
                     if (result != null)
@@ -177,13 +191,15 @@
                                 //Replace with validation posative tree.
                                 if(contrasena == cli.Password)
                                 {
-                                    NavigationManager.NavigateTo($"/MainPage/{cli.Email}");
+                                    NavigationManager.NavigateTo($"/MainPage");
+                                    //await LocalStore.SetItemAsync(email, cli.email);
+                                    await LocalStore.SetItemAsync("email", cli.Email);
                                 }
                                 else
                                 {
                                     notice = "Contraseña incorrecta";
                                 }
-                                Console.WriteLine("Last name: ", cli.LastName.ToString());
+                                //Console.WriteLine("Last name: ", cli.LastName.ToString());
                             }
                         }
                         else
